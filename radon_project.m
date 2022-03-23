@@ -4,17 +4,20 @@
 % The algorithm is presumed to input only square images.
 % Angle step size input is assumed to be in degrees.
 
-function [PROJECTIONS, t_s] = radon_project(I,sampling_points, angle_step_size)
+function [PROJECTIONS, t_s] = radon_project(I,N_detectors, projection_angle_step_size, source2det_dist)
 
 %% Getting relevant parameters from image.
 % Using size function to arrange beams.
+D = source2det_dist*0.5;
 [M,~] = size(I);
 left_end = M * -0.5;
 right_end = M * 0.5;
 
 %% Forming angle, t and grid vectors.
 % Vectors that are going to be iterated are formed here. 
-thetas = deg2rad(0:angle_step_size:180-angle_step_size) ; 
+% To transform t to gamma, we should use the image information somewhere,
+% may be the min image size?
+thetas = deg2rad(0:projection_angle_step_size:180-projection_angle_step_size) ; 
 t_s = linspace(left_end*sqrt(2),right_end*sqrt(2),sampling_points);
 X_grid = left_end : right_end;
 Y_grid = X_grid;

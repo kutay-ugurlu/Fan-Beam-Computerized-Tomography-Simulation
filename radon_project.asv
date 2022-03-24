@@ -4,11 +4,8 @@
 % The algorithm is presumed to input only square images.
 % Angle step size input is assumed to be in degrees.
 
-function [PROJECTIONS, gammas] = radon_project(I,L_detector, N_detectors, projection_angle_step_size, source2det_dist)
-%% Parameter checks
-if size(I,1) > source2det_dist
-error('Phantom does not fit between source and detector!')
-end
+function [PROJECTIONS, t_s] = radon_project(I,L_detector, N_detectors, projection_angle_step_size, source2det_dist)
+
 %% Getting relevant parameters from image.
 % Using size function to arrange beams.
 D = source2det_dist*0.5;
@@ -16,20 +13,21 @@ D = source2det_dist*0.5;
 left_end = M * -0.5;
 right_end = M * 0.5;
 FOV = L_detector*360/(2*pi*D);
-angle_between_detectors = FOV / (N_detectors-1);
+
 
 %% Forming angle, t and grid vectors.
 % Vectors that are going to be iterated are formed here. 
-
-thetas = deg2rad(0:projection_angle_step_size:180-projection_angle_step_size); 
-gammas = deg2rad(-0.5*FOV:angle_between_detectors:0.5*FOV) ; 
+% To transform t to gamma, we should use the image information somewhere,
+% may be the min image size?
+thetas = deg2rad(0:projection_angle_step_size:180-projection_angle_step_size) ; 
+gammas = 
 X_grid = left_end : right_end;
 Y_grid = X_grid;
 
 %% PROJECTIONS matrix to store the projection values:
 % A matrix that is going to store the projection values are formed here
 % with rows representing beams and columns representing projection angles.
-PROJECTIONS = zeros(length(gammas),length(thetas));
+PROJECTIONS = zeros(length(t_s),length(thetas));
 
 %% Main Loop
 % There are 2 loops passing through each beam and angle to compute the
@@ -37,14 +35,14 @@ PROJECTIONS = zeros(length(gammas),length(thetas));
 % interates on beams.
 for angle = 1:length(thetas)
     theta = thetas(angle);
-    for ray = 1:length(gammas)
-        gamma = gammas(ray);   
+    for ray = 1:length(t_s)
+        t = t_s(ray);   
         %%
         % Creating intersection vectors for each angle using the equation
-        % D sin(gamma) = x cos(theta+gamma) + y sin(theta+gamma)
-        
-        intersect_y = ((D*sin(gamma) - X_grid * cos(theta+gamma)) / sin(theta+gamma));
-        intersect_x = ((D*sin(gamma) - Y_grid * sin(theta+gamma)) / cos(theta+gamma));
+        % _t_ = cos($$ \  \theta $$)  _x_  +  sin($$ \  \theta $$)  _y_
+
+        intersect_y = ((t - X_grid * cos(theta)) / sin(theta));
+        intersect_x = ((t - Y_grid * sin(theta)) / cos(theta));
         %%
         % Putting the sorted intersections in a matrix where first column is x,
         % second is y and merge them: 

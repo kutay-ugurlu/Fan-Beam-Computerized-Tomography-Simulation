@@ -2,9 +2,9 @@
 % Inputs : Size of the image, Projection matrix.
 % Outputs : Image
 
-function [Image] = back_projection(RowNumber_I, ColumnNumber_I, PROJECTIONS)
-
-[angles, t] = size(PROJECTIONS);
+function [Image] = back_projection(RowNumber_I, ColumnNumber_I, PROJECTIONS, source2det_dist)
+D = 0.5 * source2det_dist;
+[angles, gamma] = size(PROJECTIONS);
 PROJECTIONS = transpose(PROJECTIONS);
 angle_step_size = 180/angles;
 Image = zeros(RowNumber_I, ColumnNumber_I);
@@ -13,17 +13,17 @@ right_end = -1 * left_end;
 X_grid = left_end : right_end;
 Y_grid = X_grid;
 thetas = deg2rad(0:angle_step_size:180-angle_step_size) ; 
-beams = linspace(left_end*sqrt(2),right_end*sqrt(2),t);
+beams = linspace(left_end*sqrt(2),right_end*sqrt(2),gamma);
 for angle = 1:length(thetas)
     theta = thetas(angle);
     for ray = 1:length(beams)
-        t = beams(ray);   
+        gamma = beams(ray);   
         %%
         % Creating intersection vectors for each angle using the equation
         % _t_ = cos($$ \  \theta $$)  _x_  +  sin($$ \  \theta $$)  _y_
 
-        intersect_y = ((t - X_grid * cos(theta)) / sin(theta));
-        intersect_x = ((t - Y_grid * sin(theta)) / cos(theta));
+        intersect_y = ((D*sin(gamma) - X_grid * cos(theta+gamma)) / sin(theta+gamma));
+        intersect_x = ((D*sin(gamma) - Y_grid * sin(theta+gamma)) / cos(theta+gamma));
         %%
         % Putting the sorted intersections in a matrix where first column is x,
         % second is y and merge them: 

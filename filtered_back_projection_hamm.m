@@ -1,6 +1,6 @@
 %% FILTERED BACK PROJECTION 
 
-function [Image] = filtered_back_projection(RowNumber_I, ColumnNumber_I, PROJECTIONS)
+function [Image] = filtered_back_projection_hamm(RowNumber_I, ColumnNumber_I, PROJECTIONS, L_detector, source2det_dist, N_detectors)
 [angles, L_c] = size(PROJECTIONS); % L_c : length of columns
 PROJECTIONS = transpose(PROJECTIONS);
 %% First filter the projections, then call back_projection.m script.
@@ -34,6 +34,6 @@ for i = 1:angles
     PROJECTIONS(:,i) = filtered_column;
 end
 PROJECTIONS = transpose(PROJECTIONS);
-Image = back_projection(RowNumber_I, ColumnNumber_I, PROJECTIONS);
+Image = real(back_projection(RowNumber_I, ColumnNumber_I, PROJECTIONS, L_detector, source2det_dist, N_detectors));
 end
 

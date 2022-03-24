@@ -2,22 +2,24 @@
 % Inputs : Size of the image, Projection matrix.
 % Outputs : Image
 
-function [Image] = back_projection(RowNumber_I, ColumnNumber_I, PROJECTIONS, source2det_dist)
-D = 0.5 * source2det_dist;
-[angles, gamma] = size(PROJECTIONS);
-PROJECTIONS = transpose(PROJECTIONS);
-angle_step_size = 180/angles;
+function [Image] = back_projection(RowNumber_I, ColumnNumber_I, PROJECTIONS, L_detector, source2det_dist, N_detectors)
+total_number_of_projections = size(PROJECTIONS,2);
+projection_angle_step_size = 360 / total_number_of_projections;
+D = source2det_dist*0.5;
+FOV = L_detector*360/(2*pi*D);
+angle_between_detectors = FOV / (N_detectors-1);
 Image = zeros(RowNumber_I, ColumnNumber_I);
 left_end = -0.5*RowNumber_I;
 right_end = -1 * left_end;
 X_grid = left_end : right_end;
 Y_grid = X_grid;
-thetas = deg2rad(0:angle_step_size:180-angle_step_size) ; 
-beams = linspace(left_end*sqrt(2),right_end*sqrt(2),gamma);
+thetas = deg2rad(0:projection_angle_step_size:360-projection_angle_step_size); 
+gammas = deg2rad(-0.5*FOV:angle_between_detectors:0.5*FOV); 
+
 for angle = 1:length(thetas)
     theta = thetas(angle);
-    for ray = 1:length(beams)
-        gamma = beams(ray);   
+    for ray = 1:length(gammas)
+        gamma = gammas(ray);   
         %%
         % Creating intersection vectors for each angle using the equation
         % _t_ = cos($$ \  \theta $$)  _x_  +  sin($$ \  \theta $$)  _y_

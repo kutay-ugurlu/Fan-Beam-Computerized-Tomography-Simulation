@@ -6,7 +6,7 @@
 
 function [PROJECTIONS, gammas] = radon_project(I,L_detector, N_detectors, projection_angle_step_size, source2det_dist)
 %% Parameter checks
-if size(I,1) > source2det_dist
+if size(I,1)*sqrt(2) > source2det_dist
 error('Phantom does not fit between source and detector!')
 end
 %% Getting relevant parameters from image.
@@ -21,7 +21,7 @@ angle_between_detectors = FOV / (N_detectors-1);
 %% Forming angle, t and grid vectors.
 % Vectors that are going to be iterated are formed here. 
 
-thetas = deg2rad(0:projection_angle_step_size:180-projection_angle_step_size); 
+thetas = deg2rad(0:projection_angle_step_size:360-projection_angle_step_size); 
 gammas = deg2rad(-0.5*FOV:angle_between_detectors:0.5*FOV) ; 
 X_grid = left_end : right_end;
 Y_grid = X_grid;

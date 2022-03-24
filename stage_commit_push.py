@@ -18,7 +18,12 @@ commit_message = simpledialog.askstring(title="Git",
 
 
 g.execute("git add -A")
-g.execute("git commit -m \"" + commit_message + "\"")
+try:
+    g.execute("git commit -m \"" + commit_message + "\"")
+except:
+    ctypes.windll.user32.MessageBoxW(
+        0, u"Nothing to commit, working tree clean.", u"Info", 0)
+
 command = "git push origin " + local_branch
 g.execute(command)
 

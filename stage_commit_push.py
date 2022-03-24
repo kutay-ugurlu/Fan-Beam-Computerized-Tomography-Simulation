@@ -1,5 +1,6 @@
 import git
 import os
+import sys
 import ctypes
 from git import Repo
 import tkinter as tk
@@ -23,6 +24,7 @@ try:
 except:
     ctypes.windll.user32.MessageBoxW(
         0, u"Nothing to commit, working tree clean.", u"Info", 0)
+    sys.exit()
 
 command = "git push origin " + local_branch
 g.execute(command)

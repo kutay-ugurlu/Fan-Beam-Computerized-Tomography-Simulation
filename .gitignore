@@ -1,1 +1,7 @@
 *asv
+Report/*.aux
+Report/*.out
+Report/*.xml
+Report/*.gz
+Report/*.log
+Report/*.bcf

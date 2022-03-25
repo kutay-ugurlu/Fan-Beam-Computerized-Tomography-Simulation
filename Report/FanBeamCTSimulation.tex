@@ -31,7 +31,7 @@ sorting=ynt
 
 \maketitle
 
-\begin{abstract}This project report demonstrates the implementation of Fan Beam Computerized Tomography simulation. The effect of different design parameters including the length of the detector, the number of beams and the angle between consecutive projections is inspected and discussed comparatively in both quantitative and qualitative manner. The developed code and GUI to run it can be found in \href{https://github.com/kutay-ugurlu/Fan-Beam-Computerized-Tomography-Simulation}{github.com/kutay-ugurlu/Fan-Beam-Computerized-Tomography-Simulation} \\
+\begin{abstract}This project report demonstrates the implementation of Fan Beam Computerized Tomography simulation. The effect of different design parameters including the length of the detector, the number of beams and the angle between consecutive projections is inspected and discussed comparatively in both quantitative and qualitative manner. The work is derived from the previously developed code in Parallel Beam X-Ray Computerized Tomography \cite{ugurlu2021}. The developed code and GUI to run it can be found in \href{https://github.com/kutay-ugurlu/Fan-Beam-Computerized-Tomography-Simulation}{github.com/kutay-ugurlu/Fan-Beam-Computerized-Tomography-Simulation} \\
 %\textit{Keywords:} Inverse electrocardiography, electrocacardiographic imaging, statistical estimation, Bayesian estimation, Kalman filter.
 \end{abstract}
 \begin{IEEEkeywords}
@@ -40,26 +40,13 @@ sorting=ynt
 
 \section{Introduction}
 
-Introduction paragraph on ECGI and its clinical significance.  \\
+\section{Theory}
 
-%Electrocardiographic Imaging (ECGI) is a functional imaging modality that aims to reconstruct the electrical activity of the heart noninvasively from the body surface potential (BSP) measurements~\cite{Brooks97, MacLeod98, Gulrajani98, Rudy2013, Cluitmans2015}. In this method, first based on the geometry and the conductivity distribution in the body, forward problem is solved. This step yields a relationship between the cardiac sources and the BSP measurements. Then, using this relationship, inverse problem of electrocardiography (ECG) is solved to estimate the sources from the BSP measurements. 
-%%When the cardiac sources are represented in terms of heart surface potentials (\textit{i.e.}, epicardial potentials), th
-%%However, due to attenuation and smoothing effect of the body, this is an ill-posed inverse problem. Thus, regularization should be applied to obtain realistic and stable solutions. Regularization 
-%A major challenge in ECGI is that the inverse problem is ill-posed, meaning that even small amounts of noise in the measurements yield large errors in the inverse problem solutions~\cite{Gulrajani98}. To overcome this ill-posedness, one needs to incorporate available \textit{a priori} information to regularize the solution. Many deterministic and statistical inverse problem solution methods have been proposed in literature. 
+\section{Implementation}
 
-Need for regularization and significance of statistical estimation methods for solving the inverse problem ... Brief literature review (no details, just examples)... Challenges ...\\
+\section{Results}
 
-%Many regularization methods have been applied for the solution of the inverse ECG problem in the literature. These methods include Tikhonov regularization~\cite{Tikhonov1977,Cluitmans2017}, truncated singular value decomposition (TSVD)~\cite{Hansen1997,WangQin2011}, truncated total least squares (TTLS)~\cite{Gharbalchi2016,WangQin2011}, least squares QR factorization method (LSQR)~\cite{Jiang2007}, multiple constraints-based methods~\cite{Ahmad1998,Brooks1999,SerinagaogluDogrusoz2013}, $L_{0}$, $L_{1}$ and $L_p$ ($1\le p\le 2$)-norm based methods~\cite{Ghosh2009,Xu2014,Wang2016,Rahimi2013,Rahimi2016}, model-based approaches~\cite{Liu2012, vanDam2013}, and sparse representations~\cite{Erem2014,CollFont2015,Onak2019,Cluitmans2013}. %Some of these studies only consider spatial relationships of the source distributions and impose only spatial constraints~\cite{VanOosterom1999,Serinagaoglu2005,Cluitmans2017}, whereas others also take into account the spatio-temporal nature of source distributions and include temporal constraints as well~\cite{Brooks1999a,Wang2010,Aydin2011}.
-
-%Statistical estimation methods have also found a growing popularity for solving the inverse ECG problem. These methods represent the solutions in terms of probability distributions, from which either a single solution, or samples from the posterior distribution can be obtained~\cite{Kaipio2004}. It is also possible with statistical methods to assess estimation error in terms of confidence intervals~\cite{Serinagaoglu2005,Serinagaoglu2006} and error bounds~\cite{Mosher93,Russell1998,Muravchik01}. Some researchers have adopted Bayesian estimation, in which the posterior probability density function (pdf) is obtained based on an \textit{a priori} pdf of the sources~\cite{Kay93}. Bayesian Maximum \textit{A Posteriori} (MAP) estimation was used with Gaussian pdf assumptions in~\cite{Martin1975, vanOosterom99, Serinagaoglu05, Serinagaoglu06}. Most of these studies ignored the temporally correlated nature of the heart potentials. Greensite has proposed a method of using spatio-temporal correlations in the Bayesian MAP solution~\cite{Greensite03}. State-space models (Kalman filter and smoother) have gained increased interest over the last decade, since they inherently incorporate spatio-temporal correlations by defining state transitions across time~\cite{Joly93,El-Jakl1995,Berrier2004,Ghodrati2006,Schulze2009,Liu2011,Aydin2011,Wang2010,Wang2011,Corrado2015,Erenler2018}. In a more recent study, Hierarchical Bayesian Inference was applied to estimate the $p$-value in the $L_p$-norm formulation of the cost function, as well as other statistical parameters in the pdfs, and Markov Chain Monte Carlo (MCMC) method was used for sampling the posterior pdf~\cite{Rahimi2016}.
- 
-%%%%% From Taha's paper - modify to match this paper novelty.
-
-%Despite numerous advantages of the aforementioned statistical methods, there are still issues that need to be addressed for improving the performances of these approaches. For example, how to determine the prior pdf of the sources, noise pdf, state transition definitions, etc. are among these challenges. Usually, one assumes that some prior information is available in the form of training sets~\cite{VanOosterom1999,Serinagaoglu2005,Serinagaoglu2006,Aydin2011}. These training sets could be previously recorded experimental measurements, or detailed patient-specific electrophysiological models of desired source distributions. Another approach is defining priors based on anatomic or functional information of the underlying electrophysiological properties of the source distributions~\cite{Baillet1997,Wang2011}. However, even if there is a ``good'' training set available, in the sense that it includes data reflecting the true electrophysiological properties of the desired source distributions, how to best utilize this available prior information to increase accuracy of the inverse problem solutions is still a topic that needs to be explored.
-
-Our approach and novelty of the paper.\\
-
-
+\section{Discussion}
 
 \printbibliography
 

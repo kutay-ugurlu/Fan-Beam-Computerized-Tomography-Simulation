@@ -5,3 +5,5 @@ Report/*.run.xml
 Report/*.gz
 Report/*.log
 Report/*.bcf
+Report/*.bbl
+Report/*.blg

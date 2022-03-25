@@ -4,8 +4,9 @@
 % The algorithm is presumed to input only square images.
 % Angle step size input is assumed to be in degrees.
 
-function [PROJECTIONS, gammas] = radon_project(I,L_detector, N_detectors, projection_angle_step_size, source2det_dist)
+function [PROJECTIONS, gammas] = radon_project(phantom_name,L_detector, N_detectors, projection_angle_step_size, source2det_dist)
 %% Parameter checks
+I = struct2array(load(phantom_name));
 if size(I,1)*sqrt(2) > source2det_dist
 error('Phantom does not fit between source and detector!')
 end
@@ -106,4 +107,7 @@ for angle = 1:length(thetas)
         PROJECTIONS(ray,angle) = projection_val;
     end
 end
+splits = split(phantom_name,'/');
+file_name = splits{2};
+save([file_name,'_projections.mat'],"PROJECTIONS")
 end

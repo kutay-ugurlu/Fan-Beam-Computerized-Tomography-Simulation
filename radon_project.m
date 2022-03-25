@@ -100,7 +100,7 @@ for angle = 1:length(thetas)
         end
         
         %%
-        % Projection is just the  weighted sum of pixel values weighted
+        % Projection is just the weighted sum of pixel values weighted
         % with distance weights. It is basically a dot product.
         
         projection_val = dot(weights,pixels);

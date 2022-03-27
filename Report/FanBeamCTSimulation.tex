@@ -45,15 +45,23 @@ The purpose of this project report is to demonstrate the procedure followed to s
 
 \subsection{History}
 The history of X-Ray Computerized Tomography can be dated back to 1917, when an Austrian mathematician called Johann Radon invented an algorithm, referred to as Radon transform today, on how to calculate line integrals in a two-dimensional section. The idea of computed tomography was developed in 1967 and was first used in a medical setting was in 1971 \cite{richmond2004sir}, by Godfrey Hounsfield. The device was tested at
-James Ambrose’s department at Atkinson Morley Hospital in Wimbledon. This first model did not include a computer, instead the waves was written on a magnetic tape of the device EMI Scanner CT1010. 
+James Ambrose’s department at Atkinson Morley Hospital in Wimbledon. This first model did not include a computer, instead the waves was written on a magnetic tape of the device EMI Scanner CT1010 in Figure \ref{fig:CT1010}. It was in 1973 that commercial CT scanners were available to the public. \cite{CTHist}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.3\textwidth]{images/CT.jpg}
+\includegraphics[width=0.2\textwidth]{images/CT.jpg}
 \centering \caption{First EMI Scanner \cite{emict}}\label{fig:CT1010}
 \end{figure}
 
+\vfill{\null}
+
 \section{Theory} \label{sec:theory}
+
+\begin{equation}
+	I_{measured} = I_0 e^{-\int\limits_{object}\mu(x,y)dxdy}
+\end{equation}
+
+Radon Transform computes the line integrals along the objects to obtain projections. 
 
 \section{Implementation} \label{sec:implementation}
 

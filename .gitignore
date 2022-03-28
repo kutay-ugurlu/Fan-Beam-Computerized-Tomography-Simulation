@@ -1,4 +1,4 @@
-*asv
+*.asv
 Report/*.aux
 Report/*.out
 Report/*.run.xml
@@ -7,3 +7,5 @@ Report/*.log
 Report/*.bcf
 Report/*.bbl
 Report/*.blg
+*.py
+*.mat

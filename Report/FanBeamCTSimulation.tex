@@ -9,7 +9,7 @@
 \usepackage{graphicx}
 \usepackage{color}
 \usepackage{amsmath}
-\usepackage{caption}
+\usepackage{subcaption}
 %\usepackage{cite}
 \usepackage[
 style=ieee,
@@ -17,6 +17,7 @@ sorting=ynt
 ]{biblatex}
 \graphicspath{images/}
 \addbibresource{sources.bib}
+
 
 \newcommand{\argmax}[1]{\underset{#1}{\operatorname{arg}\,\operatorname{max}}\;}
 
@@ -50,7 +51,7 @@ James Ambrose’s department at Atkinson Morley Hospital in Wimbledon. This firs
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.2\textwidth]{images/CT.jpg}
-\centering \caption{First EMI Scanner \cite{emict}}\label{fig:CT1010}
+\caption{First EMI Scanner \cite{emict}}\label{fig:CT1010}
 \end{figure}
 
 \vfill{\null}
@@ -132,8 +133,59 @@ The factor $\omega$ in Eqn. \ref{eq:Jacobian} derives from the Jacobian as follo
 \end{gather}
 
 \subsection{Convolution Back Projection}
-Eqn. \ref{eq:perfectreconstruction} tells us that the 1D Fourier transforms of the projection vectors should be weighted, \textit{i.e.} filtered, with $|w|$ to obtain the perfect reconstruction of the original unknown distributio.
- 
+Eqn. \ref{eq:perfectreconstruction} tells us that the 1D Fourier transforms of the projection vectors should be weighted, \textit{i.e.} filtered, with $|w|$ to obtain the perfect reconstruction of the original unknown distribution. From Eqn. \ref{eq:perfectreconstruction}, one can deduce that the impulse response of the projection system is $\frac{1}{|\omega|}$, \textit{i.e.}, the components representing the high frequencies in the image distribution is attenuated when they are projected and represented in the Fourier space. 
+\vfill{\null}
+To overcome this low-pass effect, the projections should be filtered with the sequence having the frequency distribution $|w|$. The filter having the band-limited characteristics of above-mentioned frequency response is called Ram-Lak filter.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=.8\columnwidth]{images/ramlak.png}
+	\caption{Ram-Lak filter response}\label{fig:barthannresp}
+	\end{figure}
+
+The sharp decrease in the Ram-Lak filter response causes ringing effect in the reconstructed images. To overcome this, the filter can be smoothed out in the higher frequency region with low-pass windows given in Figure \ref{fig:smoothingfilters}
+
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}[b]{0.45\columnwidth}
+		\centering
+	  \includegraphics[width=\linewidth]{images/hamm.png}
+	  \caption{Hamming window}
+	  \label{fig:hamm}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.45\columnwidth}
+		\centering
+	  \includegraphics[width=\linewidth]{images/barthannresp.png}
+	  \caption{Bart-Hann window}
+	  \label{fig:bart}
+	\end{subfigure}
+	\caption{Smoothing window functions}
+	\label{fig:smoothingfilters}
+\end{figure}
+
+Then, the resultant filter responses are as follows:
+
+\begin{figure}[h]
+	\centering
+	\begin{subfigure}[b]{0.45\columnwidth}
+		\centering
+	  \includegraphics[width=\linewidth]{images/smoothedhamm.png}
+	  \caption{Hamming \newline smoothed Ram-Lak}
+	  \label{fig:smoothhamm}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.45\columnwidth}
+		\centering
+	  \includegraphics[width=\linewidth]{images/smoothedhann.png}
+	  \caption{Bart-Hann \newline smoothed Ram-Lak}
+	  \label{fig:smoothbarthann}
+	\end{subfigure}
+	\caption{Ram-Lak filter response smoothed out with window functions}
+	\label{fig:smoothedfilters}
+\end{figure}
+
+The columns of the projection matrix of size $[\#Rays \times \#Projection Angles]$ is convolved with the filters having the responses shown in Figure \ref{fig:smoothedfilters}. This operation is called Convolution Back Projection.
+
+
 \section{Implementation} \label{sec:implementation}
 
 \section{Results} \label{sec:results}
@@ -143,4 +195,3 @@ Eqn. \ref{eq:perfectreconstruction} tells us that the 1D Fourier transforms of t
 \printbibliography
 
 \end{document}
-

@@ -10,6 +10,9 @@
 \usepackage{color}
 \usepackage{amsmath}
 \usepackage{subcaption}
+\usepackage{algorithmicx}
+\usepackage{algorithm}
+\usepackage{algpseudocodex}
 %\usepackage{cite}
 \usepackage[
 style=ieee,
@@ -185,8 +188,25 @@ Then, the resultant filter responses are as follows:
 
 The columns of the projection matrix of size $[\#Rays \times \#Projection Angles]$ is convolved with the filters having the responses shown in Figure \ref{fig:smoothedfilters}. This operation is called Convolution Back Projection.
 
-
 \section{Implementation} \label{sec:implementation}
+
+In this section, the computer implementation of the scientific background explained in Section \nameref{sec:theory} is going to be described.
+
+\begin{algorithm}[h]
+	\caption{Projection algorithm}\label{euclid}
+	\begin{algorithmic}
+	\Procedure{Projection}{$Image,\#Detectors, DetectorLength, Source-to-Distance Length$}
+	   \State $r\gets a\bmod b$
+	   \While{$r\not=0$}\Comment{We have the answer if r is 0}
+		  \State $a\gets b$
+		  \State $b\gets r$
+		  \State $r\gets a\bmod b$
+	   \EndWhile\label{euclidendwhile}
+	   \State \textbf{return} $b$\Comment{The gcd is b}
+	\EndProcedure
+	\end{algorithmic}
+	\label{alg:projection}
+\end{algorithm}
 
 \section{Results} \label{sec:results}
 

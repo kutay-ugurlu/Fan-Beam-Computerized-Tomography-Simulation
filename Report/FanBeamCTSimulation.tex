@@ -83,16 +83,57 @@ This equation models the X-ray beams as parallel lines through the object. In a 
 
 In Figure \ref{fig:PvsB}b, the projection angle with respect to center of rotation is defined as $\beta$ and the deviation from the center beam that is parallel to the $\beta$ beam is defined as $\gamma$ angles. In addition, the source to origin distance is labelled as $D$, resulting in source to detector distance of $2D$. 
 
-With the quantities defined above one could transform the equation in \ref{eq:radongeneral} to \ref{eq:transformedgeneral} using Eqn. \ref{eq:trans1} and \ref{eq:trans2}.
+With source to detector distance redefined as D and the remaining quantities defined as above, one could transform the equation in \ref{eq:radongeneral} to \ref{eq:transformedgeneral} using Eqn. \ref{eq:trans1} and \ref{eq:trans2}.
 \begin{align}
 	t &= D \cdot sin(\gamma) \label{eq:trans1} \\
 	\theta &= \beta + \gamma \label{eq:trans2} \\
 	p_{\beta}(\gamma) &= \iint\limits_{-\infty}^{\ \ \ \infty}\mu(x,y)\delta(xcos(\theta)+ysin(\theta) \label{eq:transformedgeneral} \\&-Dsin(\gamma))d\gamma d\beta \nonumber 
 \end{align}
+
+\subsection{Fourier Slice Theorem}
+
+The Fourier slice theorem states that Fourier transform of a projection vector $S_{\theta}(\omega) = \mathcal{F}(p_{\theta}(t))$ is the section of the original image distribution's Fourier transform $\mathcal{F}(\omega,\theta)$ along the slice of angle $\theta$, which is formally described by Eqn. \ref{eq:Fslice} \cite{kak2001principles}.
+
+\begin{equation}
+	S_{\theta}(w) = \cal{F}(\omega\cos\theta,\omega\sin\theta)
+	\label{eq:Fslice}
+\end{equation}
+
 \subsection{Back Projection}
 
+According to Fourier Slice theorem, as it is formulated in \cite{kak2001principles}, the original image distribution from projections can be obtained as follows:
 
+\begin{equation}
+	f(x,y) = \int\limits_0^\pi\left[\int\limits_{-\infty}^{+\infty}S_{\theta}(\omega)|w|e^{-j2\pi{\omega}t}d\omega\right]d\theta
+	\label{eq:perfectreconstruction}
+\end{equation}
 
+The term $|w|$ originates from the Jacobian of the coordinate transformation between Cartesian Space and Polar frequency variables. 
+
+\begin{align}
+	f(x,y) &= \int\limits_{-\infty}^{+\infty}\int\limits_{-\infty}^{+\infty}\mathcal{F}(u,v)e^{-j2\pi{(ux+vy)}}du{dv} \label{eq:2DFFT} \\
+	u &= \omega\cos\theta \\
+	v &= \omega\sin\theta \\
+	du dv &= \omega d\omega d\theta \label{eq:Jacobian}
+\end{align}
+
+The factor $\omega$ in Eqn. \ref{eq:Jacobian} derives from the Jacobian as follows:
+\begin{gather}
+	\begin{align}
+	J &= \begin{vmatrix}
+		\frac{\partial u}{\partial \omega} & \frac{\partial v}{\partial \omega} \\ 
+		\frac{\partial u}{\partial \theta} & \frac{\partial v}{\partial \theta} 
+	\end{vmatrix} = \begin{vmatrix}
+		\cos\theta & \sin\theta \\ 
+		-\omega\sin\theta & \omega\cos\theta \\
+	\end{vmatrix} \\
+	&= \omega(\sin^2\theta + \cos^2\theta) = \omega
+	\end{align}
+\end{gather}
+
+\subsection{Convolution Back Projection}
+Eqn. \ref{eq:perfectreconstruction} tells us that the 1D Fourier transforms of the projection vectors should be weighted, \textit{i.e.} filtered, with $|w|$ to obtain the perfect reconstruction of the original unknown distributio.
+ 
 \section{Implementation} \label{sec:implementation}
 
 \section{Results} \label{sec:results}

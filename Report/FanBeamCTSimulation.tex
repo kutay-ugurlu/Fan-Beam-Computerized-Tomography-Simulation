@@ -13,6 +13,9 @@
 \usepackage{algorithmicx}
 \usepackage{algorithm}
 \usepackage{algpseudocodex}
+\usepackage{cleveref}
+\usepackage{diagbox}
+%\usepackage{multicol}
 %\usepackage{cite}
 \usepackage[
 style=ieee,
@@ -193,27 +196,147 @@ The columns of the projection matrix of size $[\#Rays \times \#Projection Angles
 In this section, the computer implementation of the scientific background explained in Section \nameref{sec:theory} is going to be described.
 
 \begin{algorithm}[h]
-	\caption{Projection algorithm}\label{euclid}
+	\caption{Projection algorithm}
 	\begin{algorithmic}
-	\Procedure{Projection}{$I,N_D, L_D, L_{SD}$} \\
+	\Procedure{Projection}{$I,N_D, L_D, L_{SD}$} 
 	\State Projections = ZEROS
+	\State Form the image Grid $[X(:),Y(:)]$
 	   \For{Projection angle $\beta$}
-	   	  \For{Fan beam angle $\gamma$}
-			\State $a\gets b$
-			\State $b\gets r$
-			\State $r\gets a\bmod b$
+	   	  \For{Fan beam angle $\gamma$}\\
+			\Comment{$Line = F(x,y,\beta,\gamma)$}
+			\State Calculate x intersection
+			\State Calculate y intersection
+			\State Sort \Comment{Regular grid}
+			\State Find distance between intersections\Comment{weights}
+			\State Find the corresponding pixels
+			\State Calculate projection \Comment{$weights \cdot I(pixels)$}
+			\State Store in projection matrix
 		  \EndFor
-	   \EndFor\label{euclidendwhile}
-	   \State \textbf{return} $b$\Comment{The gcd is b}
+	   \EndFor
+	   \State \textbf{return Projection matrix}
 	\EndProcedure
 	\end{algorithmic}
 	\label{alg:projection}
 \end{algorithm}
 
-\section{Results} \label{sec:results}
+The matrix returned by the procedure defined in Algorithm \ref{alg:projection} is used in Algorithm \ref{alg:backprojection} to reconstruct the image. 
+
+\begin{algorithm}[h]
+	\caption{Backprojection algorithm}
+	\begin{algorithmic}
+	\Procedure{Projection}{$I,N_D, L_D, L_{SD}$} 
+	\State Projections = ZEROS
+	\State Form the image Grid $[X(:),Y(:)]$
+	   \For{Projection angle $\beta$}
+	   	  \For{Fan beam angle $\gamma$}\\
+			\Comment{$Line = F(x,y,\beta,\gamma)$}
+			\State Calculate x intersection
+			\State Calculate y intersection
+			\State Sort \Comment{Regular grid}
+			\State Find distance between intersections\Comment{weights}
+			\State Find the corresponding pixels \Comment{Mid-points}
+			\State Sum projections in the pixels \Comment{$I(pixel) += projection$}
+		  \EndFor
+	   \EndFor
+	   \State \textbf{return Reconstructed Image}
+	\EndProcedure
+	\end{algorithmic}
+	\label{alg:backprojection}
+\end{algorithm}
+\newpage
+\section{Results}\label{sec:results}
+
+Using the algorithm defined in the \nameref{sec:implementation} section, all the sample phantoms are reconstructed via Projection and Convolution Back projection algorithm. \Cref{fig:lane,fig:sqcircprojected,fig:squareprojected,fig:sheppprojected} are reconstructed utilizing the following projection parameters for angles \(0^\circ, 45^\circ, 90^\circ\):
+\begin{itemize}
+	\item Number of detectors = 71
+	\item Number of fans = 180
+	\item Source to detector distance = Image size $\times \sqrt{3}$
+	\item Length of the detector = Source to detector distance 
+\end{itemize}
+\begin{figure}[h]
+\centering
+\includegraphics[width=\columnwidth,height=.3\textheight]{images/lenaprojected.png}
+\caption{Projections and reconstructions of Lena phantom}\label{fig:lane}
+\end{figure}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\columnwidth,height=.3\textheight]{images/sqcircprojected.png}
+	\caption{Projections and reconstructions of Square-Circle phantom}\label{fig:sqcircprojected}
+\end{figure}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\columnwidth,height=.3\textheight]{images/square_projected.png}
+	\caption{Projections and reconstructions of Square phantom}\label{fig:squareprojected}
+\end{figure}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\columnwidth,height=.3\textheight]{images/shepp_projected.png}
+	\caption{Projections and reconstructions of Shepp Logan phantom}\label{fig:sheppprojected}
+\end{figure}
+\newpage
+In addition, the effect of the parameters such as filter type, projection angle step size and number of detectors are examined using the structural similarity index \cite{wang2004image} between the gray intensity pictures of ground truth phantoms and reconstructed images. The results of these experiments are presented in \Cref{tab:filter,tab:angle,tab:beams}.
+\begin{table}[h]
+\centering
+	\begin{tabular}{|c|c|c|c|}
+		\hline 
+		\diagbox{Filters}{Phantoms} & Shepp Logan & Square & Square Circle \\ 
+		\hline 
+		No-filter & 0.153 & 0.100 & 0.029 \\ 
+		Ram-Lak & 0.231 & 0.057 & 0.032 \\ 
+		BartHann & 0.246 & 0.058 & 0.044 \\ 
+		Hamming & 0.244 & 0.058 & 0.043 \\ 
+		\hline 
+		\end{tabular}
+\caption{\label{tab:filter}SSIM Index for different filter reconstructions}
+\end{table}
+\newpage
+\begin{table}[h]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|}
+		\hline 
+		\diagbox{Filters}{Phantoms} & 50 & 75 & 150 & 300 \\ 
+		\hline 
+		No-filter & 0.015 & 0.018 & 0.017 & 0.035 \\ 
+		Ram-Lak & 0.019 & 0.019 & 0.024 & 0.039 \\ 
+		BartHann & 0.027 & 0.028 & 0.034 & 0.048 \\ 
+		Hamming & 0.026 & 0.028 & 0.033 & 0.048 \\ 
+		\hline 
+		\end{tabular}
+	\caption{\label{tab:beams}SSIM Index for different number of beams}
+\end{table}
+\begin{table}[h]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|}
+		\hline 
+		\diagbox{Filters}{Phantoms} & 2 & 1 & 0.5 & 0.25 \\ 
+		\hline 
+		No-filter & 0.022 & 0.029 & 0.030 & 0.030 \\ 
+		Ram-Lak & 0.025 & 0.032 & 0.039 & 0.043 \\ 
+		BartHann & 0.028 & 0.044 & 0.049 & 0.048 \\ 
+		Hamming & 0.027 & 0.043 & 0.048 & 0.048 \\ 
+		\hline 
+		\end{tabular}
+	\caption{\label{tab:angle}SSIM Index for different angles}
+\end{table}
+The experiments show that the imaging parameters may affect the reconstructed imaging quality significantly with respect to the case where the parameters are not carefully selected. One example image reconstructed with $0.5^\circ$ angle step size and 200 detectors can be seen in \Cref{fig:sheppimproved,fig:sqcircimproved},
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\columnwidth,height=.15\textheight]{images/shepp_improved.png}
+	\caption{Improved reconstruction of Shepp Logan phantom}\label{fig:sheppimproved}
+\end{figure}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\columnwidth,height=.15\textheight]{images/sqcircimproved.png}
+	\caption{Improved reconstruction of Square Circle phantom}\label{fig:sqcircimproved}
+\end{figure}
+
+
+
 
 \section{Discussion} \label{sec:discuss}
+Some discussion here
+
+
 
 \printbibliography
-
 \end{document}

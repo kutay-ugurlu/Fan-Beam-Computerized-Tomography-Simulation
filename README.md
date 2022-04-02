@@ -19,5 +19,5 @@ The project consists of 2 main scripts: [radon_project.m](https://github.com/kut
 | Use "." for decimal seperator. | 
 | Checking the __Delete Projections when quitting__ box will delete all the available projections generated while the app runs. Make sure to uncheck it if you want to reuse them.| 
 
-
+### An example tutorial 
 ![GUI Example](https://user-images.githubusercontent.com/83376963/161386142-7ca3844d-2933-4976-9893-b8caa940af0a.png)

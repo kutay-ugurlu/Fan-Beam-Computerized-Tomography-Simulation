@@ -13,12 +13,16 @@ for sample = sample_names
     phantom_name = folder_file{2};
     [PROJECTIONS, ~] = radon_project(sample,L_detector, N_detectors, projection_angle_step_size, source2det_dist);
     RI = (back_projection(RowNumber_I, ColumnNumber_I, PROJECTIONS, L_detector, source2det_dist, N_detectors));
+    RR = (filtered_back_projection_ram(RowNumber_I, ColumnNumber_I, PROJECTIONS, L_detector, source2det_dist, N_detectors));
     RH = (filtered_back_projection_hamm(RowNumber_I, ColumnNumber_I, PROJECTIONS, L_detector, source2det_dist, N_detectors));
     figure
-    subplot(1,2,1)
-    imagesc(I), colormap gray
-    title('Original Phantom')
-    subplot(1,2,2)
-    imagesc(mat2gray(RH)), colormap gray
-    title('Filtered Backprojected Image')
+    subplot(1,3,1)
+    imagesc(RI), colormap gray
+    title('Backprojected Image')
+    subplot(1,3,2)
+    imagesc((RR)), colormap gray
+    title('Ram-Lak Filtered Backprojected Image')
+    subplot(1,3,3)
+    imagesc((RH)), colormap gray
+    title('Hamming Filtered Backprojected Image')
 end

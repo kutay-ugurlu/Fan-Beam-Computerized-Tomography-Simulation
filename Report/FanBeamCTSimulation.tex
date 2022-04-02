@@ -138,7 +138,7 @@ The factor $\omega$ in Eqn. \ref{eq:Jacobian} derives from the Jacobian as follo
 	\end{align}
 \end{gather}
 
-\subsection{Convolution Back Projection}
+\subsection{Convolution Back Projection} \label{subsec:convback}
 Eqn. \ref{eq:perfectreconstruction} tells us that the 1D Fourier transforms of the projection vectors should be weighted, \textit{i.e.} filtered, with $|w|$ to obtain the perfect reconstruction of the original unknown distribution. From Eqn. \ref{eq:perfectreconstruction}, one can deduce that the impulse response of the projection system is $\frac{1}{|\omega|}$, \textit{i.e.}, the components representing the high frequencies in the image distribution is attenuated when they are projected and represented in the Fourier space. 
 \vfill{\null}
 To overcome this low-pass effect, the projections should be filtered with the sequence having the frequency distribution $|w|$. The filter having the band-limited characteristics of above-mentioned frequency response is called Ram-Lak filter.
@@ -254,11 +254,12 @@ Using the algorithm defined in the \nameref{sec:implementation} section, all the
 	\item Number of fans = 180
 	\item Source to detector distance = Image size $\times \sqrt{3}$
 	\item Length of the detector = Source to detector distance 
+	\item Filter: Hamming
 \end{itemize}
 \begin{figure}[h]
 \centering
 \includegraphics[width=\columnwidth,height=.3\textheight]{images/lenaprojected.png}
-\caption{Projections and reconstructions of Lena phantom}\label{fig:lane}
+\caption{Projections and reconstructions of Lena phantom}\label{fig:lenaprojected}
 \end{figure}
 \begin{figure}[h]
 	\centering
@@ -292,11 +293,12 @@ In addition, the effect of the parameters such as filter type, projection angle 
 \caption{\label{tab:filter}SSIM Index for different filter reconstructions}
 \end{table}
 \newpage
+\textbf{Square circle} phantom is utilized in the projection angle step size and number of detectors experiments due to the easiness of visual assessment and its having large number of pixels among the available samples. 
 \begin{table}[h]
 	\centering
 	\begin{tabular}{|c|c|c|c|c|}
 		\hline 
-		\diagbox{Filters}{Phantoms} & 50 & 75 & 150 & 300 \\ 
+		\diagbox{Filters}{Beams} & 50 & 75 & 150 & 300 \\ 
 		\hline 
 		No-filter & 0.015 & 0.018 & 0.017 & 0.035 \\ 
 		Ram-Lak & 0.019 & 0.019 & 0.024 & 0.039 \\ 
@@ -310,7 +312,7 @@ In addition, the effect of the parameters such as filter type, projection angle 
 	\centering
 	\begin{tabular}{|c|c|c|c|c|}
 		\hline 
-		\diagbox{Filters}{Phantoms} & 2 & 1 & 0.5 & 0.25 \\ 
+		\diagbox{Filters}{Angles} & 2 & 1 & 0.5 & 0.25 \\ 
 		\hline 
 		No-filter & 0.022 & 0.029 & 0.030 & 0.030 \\ 
 		Ram-Lak & 0.025 & 0.032 & 0.039 & 0.043 \\ 
@@ -320,25 +322,33 @@ In addition, the effect of the parameters such as filter type, projection angle 
 		\end{tabular}
 	\caption{\label{tab:angle}SSIM Index for different angles}
 \end{table}
-The experiments show that the imaging parameters may affect the reconstructed imaging quality significantly with respect to the case where the parameters are not carefully selected. One example image reconstructed with $0.5^\circ$ angle step size and 200 detectors can be seen in \Cref{fig:sheppimproved,fig:sqcircimproved},
+The experiments show that the imaging parameters may affect the reconstructed imaging quality significantly with respect to the case where the parameters are not carefully selected. One example image reconstructed with $0.5^\circ$ angle step size and 200 detectors can be seen in \Cref{fig:sqimproved,fig:sqcircimproved}.
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=\columnwidth,height=.15\textheight]{images/shepp_improved.png}
-	\caption{Improved reconstruction of Shepp Logan phantom}\label{fig:sheppimproved}
+	\includegraphics[width=\columnwidth,height=.12\textheight]{images/sq_improved.png}
+	\caption{Improved reconstruction of Square phantom}\label{fig:sqimproved}
 \end{figure}
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=\columnwidth,height=.15\textheight]{images/sqcircimproved.png}
+	\includegraphics[width=\columnwidth,height=.12\textheight]{images/sqcircimproved.png}
 	\caption{Improved reconstruction of Square Circle phantom}\label{fig:sqcircimproved}
 \end{figure}
-
-
-
-
+\newpage
 \section{Discussion} \label{sec:discuss}
-Some discussion here
 
+A series of experiments are conducted to observe the effect of different imaging parameters in fan-beam X-ray computerized tomography setup. The results of the regarding experiments are shared in the \nameref{sec:results} Section. This section is devoted evaluate the results both quantitatively and qualitatively.
+\subsection{Convolution Back Projection filter}
 
+A series of filters and windows are used in convolution back projection implementation to overcome the low-pass effect of the back projection algorithm described in Section \ref{subsec:convback}. The reconstruction similarity metrics in Table \ref{tab:filter} show that the proposed filters can increase the similarity metric up to by 60\% with respect to the metrics obtained by plain back projection algorithm for 3 of the 4 phantoms. This relation was not observed in the \textbf{square} phantom. The reason can be attributed to the fact that ringing effects (pixelation) caused by the filters decreases structural similarity in the regions further from the main object, although they increase the contrast by their high frequency characteristics. 
+\subsection{Number of Beams - Number of Detectors} \label{subsec:beams}
 
+X-Ray CT systems are considered to be overdetermined linear systems, due to high number of equations introduced by each X-ray beam compared to the number of pixels to be reconstructed. Table \ref{tab:beams} shows that increasing the number of beams, hence increasing the number of measurements, may result in an increase of up to 105\% in the similarity index. The theoretical explanation is that reconstructions with less errors is possible in the higher dimension of measurements.
+
+\subsection{Projection Angle Step Size - Number of Fans}
+The same relationship observed in the case of increasing number of beams is encountered in the case of increased number of fans. Table \ref{tab:angle} shows that more number of fans may increase the similarity index by 78\%. The reason behind this is that increasing the number of fans increases the number of measurement, as it is described Section \ref{subsec:beams}, 
+
+\subsection{Qualitative Assesment}
+In figures \cref{fig:lenaprojected,fig:sqcircprojected,fig:squareprojected,fig:sheppprojected,fig:sqimproved,fig:sqcircimproved}, it is possible to observe an increasing contrast and quality of reconstructed images when convolution back projection algorithm is used. It is clear that introduction of these filters into the algorithm removes introduced by back projection. 
+\newpage
 \printbibliography
 \end{document}

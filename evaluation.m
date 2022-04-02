@@ -9,7 +9,7 @@ F_T.Properties.VariableNames = {'Filters','Shepp Logan', 'Square', 'Square Circl
 F_T.Filters = ["No-filter";"Ram-Lak";"BartHann";"Hamming"];
 
 %% Loop
-phantom_names = ["Phantoms/SheppLogan","Phantoms/square","Phantoms/square_circle"];
+phantom_names = ["Phantoms/SheppLogan","Phantoms/square","Phantoms/squarecircle"];
 for phantom_name = phantom_names;
         folder_file = split(phantom_name,'/');
         col_name = find(phantom_name == phantom_names) + 1; % To skip Filter names column
@@ -44,7 +44,7 @@ angles = [2,1,0.5,0.25];
 N_detectors = 250;
 
 %% Loop
-phantom_name = 'Phantoms/square_circle';
+phantom_name = 'Phantoms/squarecircle';
 for angle = angles
         I = mat2gray(struct2array(load(phantom_name)));
         [RowNumber_I, ColumnNumber_I] = size(I);

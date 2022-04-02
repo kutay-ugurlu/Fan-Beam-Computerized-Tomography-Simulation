@@ -40,7 +40,7 @@ sorting=ynt
 
 \maketitle
 
-\begin{abstract}This project report demonstrates the implementation of Fan Beam Computerized Tomography simulation. The effect of different design parameters including the length of the detector, the number of beams and the angle between consecutive projections is inspected and discussed comparatively in both quantitative and qualitative manner. The work is derived from the previously developed code in Parallel Beam X-Ray Computerized Tomography \cite{ugurlu2021}. The developed software and GUI to run it can be found in \href{https://github.com/kutay-ugurlu/Fan-Beam-Computerized-Tomography-Simulation}{github.com/kutay-ugurlu/Fan-Beam-Computerized-Tomography-Simulation} \\
+\begin{abstract}This project report demonstrates the implementation of Fan Beam Computerized Tomography simulation. The effect of different design parameters including the length of the detector, the number of beams and the angle between consecutive projections is inspected and discussed comparatively in both quantitative and qualitative manner. An improvement of 105\% in structural similarity index is observed by utilizing the idea of convolution back projection. The work is derived from the previously developed code in Parallel Beam X-Ray Computerized Tomography \cite{ugurlu2021}. The developed software and GUI to run it can be found in \href{https://github.com/kutay-ugurlu/Fan-Beam-Computerized-Tomography-Simulation}{github.com/kutay-ugurlu/Fan-Beam-Computerized-Tomography-Simulation} \\
 %\textit{Keywords:} Inverse electrocardiography, electrocacardiographic imaging, statistical estimation, Bayesian estimation, Kalman filter.
 \end{abstract}
 \begin{IEEEkeywords}
@@ -69,7 +69,7 @@ In X-ray tomography, images are modelled as attenuation coefficient distribution
 	I_{measured} = I_0 e^{-\iiint\limits_{object}\mu(x,y,z)dxdydz}
 	\label{eq:radon3d}
 \end{equation}
-When the object to be imaged is two dimensional or can be reduced to a two dimensional slice, Eqn \ref{eq:radon3d} reduces to Eqn \ref{eq:radon2d}:
+When the object to be imaged is two-dimensional or can be reduced to a two-dimensional slice, Eqn \ref{eq:radon3d} reduces to Eqn \ref{eq:radon2d}:
 \begin{equation}
 	I_{measured} = I_0 e^{-\iint\limits_{slice}\mu(x,y)dxdy}
 	\label{eq:radon2d}
@@ -222,7 +222,7 @@ In this section, the computer implementation of the scientific background explai
 The matrix returned by the procedure defined in Algorithm \ref{alg:projection} is used in Algorithm \ref{alg:backprojection} to reconstruct the image. 
 
 \begin{algorithm}[h]
-	\caption{Backprojection algorithm}
+	\caption{Back projection algorithm}
 	\begin{algorithmic}
 	\Procedure{Projection}{$I,N_D, L_D, L_{SD}$} 
 	\State Projections = ZEROS
@@ -342,12 +342,12 @@ A series of experiments are conducted to observe the effect of different imaging
 A series of filters and windows are used in convolution back projection implementation to overcome the low-pass effect of the back projection algorithm described in Section \ref{subsec:convback}. The reconstruction similarity metrics in Table \ref{tab:filter} show that the proposed filters can increase the similarity metric up to by 60\% with respect to the metrics obtained by plain back projection algorithm for 3 of the 4 phantoms. This relation was not observed in the \textbf{square} phantom. The reason can be attributed to the fact that ringing effects (pixelation) caused by the filters decreases structural similarity in the regions further from the main object, although they increase the contrast by their high frequency characteristics. 
 \subsection{Number of Beams - Number of Detectors} \label{subsec:beams}
 
-X-Ray CT systems are considered to be overdetermined linear systems, due to high number of equations introduced by each X-ray beam compared to the number of pixels to be reconstructed. Table \ref{tab:beams} shows that increasing the number of beams, hence increasing the number of measurements, may result in an increase of up to 105\% in the similarity index. The theoretical explanation is that reconstructions with less errors is possible in the higher dimension of measurements.
+X-Ray CT systems are considered to be overdetermined linear systems, due to high number of equations introduced by each X-ray beam compared to the number of pixels to be reconstructed. Table \ref{tab:beams} shows that increasing the number of beams, hence increasing the number of measurements, may result in an increase of up to 105\% in the similarity index. The theoretical explanation is that reconstructions with less error is possible in the higher dimension of measurements.
 
 \subsection{Projection Angle Step Size - Number of Fans}
 The same relationship observed in the case of increasing number of beams is encountered in the case of increased number of fans. Table \ref{tab:angle} shows that more number of fans may increase the similarity index by 78\%. The reason behind this is that increasing the number of fans increases the number of measurement, as it is described Section \ref{subsec:beams}, 
 
-\subsection{Qualitative Assesment}
+\subsection{Qualitative Assessment}
 In figures \cref{fig:lenaprojected,fig:sqcircprojected,fig:squareprojected,fig:sheppprojected,fig:sqimproved,fig:sqcircimproved}, it is possible to observe an increasing contrast and quality of reconstructed images when convolution back projection algorithm is used. It is clear that introduction of these filters into the algorithm removes introduced by back projection. 
 \newpage
 \printbibliography

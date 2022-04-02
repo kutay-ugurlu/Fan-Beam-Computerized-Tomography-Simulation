@@ -9,3 +9,5 @@ Report/*.bbl
 Report/*.blg
 *.py
 *.mat
+*.docx
+HonorPledge.pdf

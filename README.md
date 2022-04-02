@@ -9,7 +9,7 @@ The project consists of 2 main scripts: [radon_project.m](https://github.com/kut
 #### Projection
 * The interface requires the phantom path input as relative input to the MATLAB app directory. 
 * Set the required parameters numerically.
-* Press the <ins> PROJECT </ins> button.
+* Press the <ins>PROJECT</ins> button.
 #### Back Projection
 * After the projection step is complete, the projection data is stored in the current working directory.
 * Choose the Convolution Back Projection reconstruction filter.
